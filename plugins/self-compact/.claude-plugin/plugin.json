@@ -1,6 +1,6 @@
 {
   "name": "self-compact",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Context-driven compaction: Claude calls compact_here when a phase of work has concluded, and an idle session is compacted before its prompt cache expires.",
   "author": {
     "name": "jiro-prog"

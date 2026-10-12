@@ -81,6 +81,9 @@ export const register: Register = (on, options) => {
         },
         required: ['instructions'],
       },
+      // A plugin's tools wait behind ToolSearch by default; the model has to read this one's
+      // description to know when to call it.
+      isDeferred: false,
     })
 
     state.toolName = registered.tool
@@ -88,7 +91,8 @@ export const register: Register = (on, options) => {
     return next(e)
   })
 
-  // A plugin's tools wait behind ToolSearch by default; the model has to see this one to use it.
+  // This pin alone left the tool behind ToolSearch after /reload-plugins (2.1.296), hence the
+  // `isDeferred` at registration; it stays as a second hold.
   on('tool.describe', async ($, e, next) => {
     const described = await next(e)
 

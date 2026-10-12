@@ -18,7 +18,7 @@ const turnEnd = (turnId: string, isAborted = false) =>
 function world(on: On, size: { tokens: number; isTurnRunning?: boolean }) {
   const compactions: (string | undefined)[] = []
   const toasts: string[] = []
-  const registered: string[] = []
+  const registered: { name: string; isDeferred?: boolean }[] = []
   const clock = mock.clock(on)
 
   on('session.start', ($, e) => ({ cwd: e.cwd }))
@@ -26,7 +26,8 @@ function world(on: On, size: { tokens: number; isTurnRunning?: boolean }) {
   on('turn.complete', ($, e) => ({ text: e.answer }))
   on('session.messages', () => ({ value: [SUMMARY] as SessionMessage[] }))
   on('tool.register', ($, e) => {
-    registered.push(e.name)
+    const { isDeferred } = e as { isDeferred?: boolean }
+    registered.push({ name: e.name, isDeferred })
 
     return { value: { tool: `mcp__self-compact__${e.name}` } }
   })
@@ -54,7 +55,14 @@ function world(on: On, size: { tokens: number; isTurnRunning?: boolean }) {
 }
 
 describe('compact_here', () => {
-  test('is listed in front of the model, not behind ToolSearch', async ($, on) => {
+  test('is registered in front of the model, not behind ToolSearch', async ($, on) => {
+    const w = world(on, { tokens: 200_000 })
+    await $.session.start(SESSION)
+
+    expect(w.registered).toEqual([{ name: 'compact_here', isDeferred: false }])
+  })
+
+  test('stays in front when the engine describes it', async ($, on) => {
     world(on, { tokens: 200_000 })
     await $.session.start(SESSION)
 

@@ -56,8 +56,8 @@ summarizer reads it for every compaction, this plugin's included.
 
 ## How it works
 
-- `session.start` registers the tool with `$.tool.register` and keeps it out of ToolSearch
-  (`tool.describe` → `isDeferred: false`), so the model reads its description.
+- `session.start` registers the tool with `$.tool.register({ ..., isDeferred: false })`, keeping it
+  out of ToolSearch so the model reads its description; a `tool.describe` hook pins the same.
 - The tool call only queues the instructions. `turn.complete` (main loop only) runs
   `$.session.compact({ instructions })` once the turn is over. A compaction refused because a new turn
   had already started is kept for the end of that turn; an interrupted turn drops it.
@@ -71,6 +71,9 @@ summarizer reads it for every compaction, this plugin's included.
 - Idle compaction assumes Claude Code's one-hour prompt cache. With a five-minute cache it still
   shrinks the conversation, but the cache has already expired by then.
 - Function hooks are a young Claude Code API; this was built and tested on Claude Code 2.1.296.
+  Before 2.1.294, `$.tool.register` ignores `isDeferred`, and on 2.1.289 the tool still came up behind
+  ToolSearch after `/reload-plugins` despite the `tool.describe` pin. The model then only sees its
+  name until it loads the tool.
 
 ## Develop
 
