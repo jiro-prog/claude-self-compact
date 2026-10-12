@@ -1,0 +1,4 @@
+{
+  "description": "compact_here tool (compacts after the turn) and idle compaction before the prompt cache expires",
+  "modules": ["./register.ts"]
+}

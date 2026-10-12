@@ -1,0 +1,16 @@
+{
+  "name": "self-compact",
+  "owner": {
+    "name": "jiro-prog"
+  },
+  "metadata": {
+    "description": "Context-driven compaction for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "self-compact",
+      "source": "./plugins/self-compact",
+      "description": "Claude compacts the conversation itself when a phase of work concludes (compact_here), and idle sessions are compacted before their prompt cache expires."
+    }
+  ]
+}

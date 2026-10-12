@@ -1,0 +1,35 @@
+{
+  "name": "self-compact",
+  "version": "0.1.0",
+  "description": "Context-driven compaction: Claude calls compact_here when a phase of work has concluded, and an idle session is compacted before its prompt cache expires.",
+  "author": {
+    "name": "jiro-prog"
+  },
+  "license": "MIT",
+  "userConfig": {
+    "minTokens": {
+      "type": "number",
+      "title": "compact_here: minimum context",
+      "description": "compact_here refuses below this many context tokens (too small to be worth a summary).",
+      "default": 60000
+    },
+    "idleCompact": {
+      "type": "boolean",
+      "title": "Compact idle sessions",
+      "description": "Compact a large conversation that has sat idle, before its prompt cache expires.",
+      "default": true
+    },
+    "idleMinutes": {
+      "type": "number",
+      "title": "Idle minutes before compacting",
+      "description": "Minutes after the last turn ends. Keep it under the prompt cache lifetime (60 minutes in Claude Code).",
+      "default": 50
+    },
+    "idleMinTokens": {
+      "type": "number",
+      "title": "Idle compaction: minimum context",
+      "description": "An idle session is compacted only at or above this many context tokens.",
+      "default": 150000
+    }
+  }
+}
