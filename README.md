@@ -1,5 +1,7 @@
 # self-compact
 
+English | [日本語](README.ja.md)
+
 Context-driven compaction for [Claude Code](https://code.claude.com), as a plugin of function hooks.
 
 Claude Code compacts a conversation when it gets full: a token count decides. This plugin adds two
